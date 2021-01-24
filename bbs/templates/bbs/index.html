@@ -1,0 +1,14 @@
+{% extends './base.html' %}
+{% block content %}
+    <h1>中尾のBBS</h1>
+    <p>{{ message }}</p>
+    {% for article in articles %}
+        <p><a href="{% url 'bbs:detail' article.id %}">{{ article.content }}</a></p>
+        <p><a href="{% url 'bbs:delete' article.id %}">削除</a></p>
+    {% endfor %}
+    <p>
+        <a href="{% url 'bbs:create'%}">記事投稿</a>
+        
+    </p>
+{% endblock %}
+
