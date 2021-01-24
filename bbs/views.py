@@ -1,16 +1,27 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Article
+from .forms import SearchForm
 
 # 掲示板一覧ページ
 def index(request):
     # return HttpResponse('HelloWorld')
+    
+    # もしサーチフォームに正常なデータがあればキーワードのデータを代入して
+    # DBから該当のデータを取り出す
+    searchForm = SearchForm(request.GET)
+    if searchForm.is_valid():
+        keyword = searchForm.cleaned_data['keyword']
+        articles = Article.objects.filter(content__contains=keyword)
+    else:
+        searchForm = SearchForm()
+        # DBからすべての投稿をとりだし、articles変数に代入
+        articles = Article.objects.all()
 
-    # DBからすべての投稿をとりだし、articles変数に代入
-    articles = Article.objects.all()
     context = {
         'message': 'Welcome my bbs',
         'articles': articles,
+        'searchForm': searchForm,
     }
 
     # renderはデータとテンプレートを組み合わせてWebページを返すショートカット関数、第三引数に辞書型を渡すとテンプレートを呼び出すことができる。
