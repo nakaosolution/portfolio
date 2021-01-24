@@ -1,0 +1,3 @@
+/myblogapp/local_setting.py
+*.pyc
+!/.idea
