@@ -1,6 +1,15 @@
 {% extends './base.html' %}
 {% block title %}BBS詳細{% endblock %}
 {% block content %}
+    <!-- パンくず -->
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">HOME</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'bbs:index' %}">BBS一覧</a></li>
+          <li class="breadcrumb-item active" aria-current="page">BBS詳細</li>
+        </ol>
+    </nav>
+    <!-- パンくず終了 -->
     <h1>中尾のBBS</h1>
     <p>{{ message }}</p>
     <p>{{ article.user_name }}</p>

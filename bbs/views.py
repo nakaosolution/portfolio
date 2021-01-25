@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from .models import Article
 from .forms import SearchForm
 
+
+
 # 掲示板一覧ページ
 def index(request):
     # return HttpResponse('HelloWorld')
