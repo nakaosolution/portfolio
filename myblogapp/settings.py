@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'posts.apps.PostsConfig',
     'bbs.apps.BbsConfig',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [

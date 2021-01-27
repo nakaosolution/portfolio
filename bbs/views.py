@@ -2,8 +2,42 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Article
 from .forms import SearchForm
+from .forms import ArticleForm
+
+# 新規投稿ページ
+def new(request):
+    articleForm = ArticleForm()
+
+    context = {
+        'message': 'New Article',
+        'articleForm': articleForm
+    }
+    return render(request, 'bbs/new.html', context)
+
+# 記事編集ページ
+def edit(request, id):
+    article = get_object_or_404(Article, pk=id)
+    articleForm = ArticleForm(instance=article)
+    context = {
+        'message': 'Show Article' + str(id),
+        'article': article,
+        'articleForm': articleForm
+    }
+    return render(request, 'bbs/edit.html', context)
 
 
+def update(request, id):
+    if request.method == 'POST':
+        article = get_object_or_404(Article, pk=id)
+        articleForm = ArticleForm(request.POST, instance=article)
+        if articleForm.is_valid():
+            articleForm.save()
+
+    context = {
+        'message': 'Update Article' + str(id),
+        'article': article,
+    }
+    return render(request, 'bbs/detail.html', context)
 
 # 掲示板一覧ページ
 def index(request):
@@ -40,18 +74,18 @@ def detail(request, id):
     return render(request, 'bbs/detail.html', context)
 
 
-# 記事投稿ページ
+# 記事投稿関数
 def create(request):
     # contentがHello BBS user_nameが名無しさんのデータをDBに保存
-    article = Article(content='Hello BBS',user_name='名無しさん')
-    article.save()
-
-    articles = Article.objects.all()
+    if request.method == 'POST':
+        articleForm = ArticleForm(request.POST)
+        if articleForm.is_valid():
+            article = articleForm.save()
     context = {
-        'message': 'Welcome my bbs',
-        'articles': articles,
+        'message': 'Create article' + str(article.id),
+        'article': article,
     }
-    return render(request, 'bbs/index.html', context)
+    return render(request, 'bbs/detail.html', context)
 
 
 # 記事削除ページ
